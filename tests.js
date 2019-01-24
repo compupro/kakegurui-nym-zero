@@ -20,3 +20,4 @@ console.log(testPlayer.hand);
 testGame = new Game(4, 9, 200, 4);
 testGame.dealHands();
 console.table(testGame.players);
+testGame.nextRound();

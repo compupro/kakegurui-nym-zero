@@ -1,6 +1,8 @@
 /* Utility functions */
 
-/* @param Array o   An array to be shuffled */
+/*
+@param Array o
+*/
 function shuffle(o) {
 	for(var j, x, i = o.length; i; j = parseInt(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
 	return o;
@@ -8,11 +10,16 @@ function shuffle(o) {
 
 /*
 Returns a random integer from 0 to n
-
-@param int n   
 */
 function randInt(n) {
     return Math.floor(Math.random() * n);
+}
+
+/*
+Use this so negative n doesn't return negative answer
+*/
+function mod(n, m) {
+    return ((n % m) + m) % m;
 }
 
 class Deck {
@@ -90,13 +97,14 @@ class Game {
         this.deck = new Deck(3, 10);
         this.threshold = threshold;
         this.handSize = handSize;
-        this.round = -1;
-        this.playerIndex = 0;
         this.players = [];
         for (var i = 0; i < players-1; i++){
             this.players.push(new Player(false, startBalance, 'AI'));
         }
         this.players.push(new Player(true, startBalance, 'You'));
+        this.startingPlayer = randInt(players);
+        this.round = -1;
+        this.turn = -players; //While turn is negative, we are still betting
     }
     
     dealHands() {
@@ -106,6 +114,25 @@ class Game {
     }
     
     nextRound() {
+        this.dealHands();
         this.round++;
+        this.turn = -this.players.length;
+    }
+    
+    /*
+    @param int n    A bet if betting, an index in the hand if playing
+    */
+    playTurn(n) {
+        player = this.players[mod(turn, this.players.length)]
+        if (this.turn < 0){ //If betting
+            if (player.isHuman) {
+                
+            } else {
+                player.bet(1);
+            }
+        } else {
+            
+        }
+        this.turn++;
     }
 }
