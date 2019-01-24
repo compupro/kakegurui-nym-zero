@@ -87,7 +87,7 @@ class Game {
     @param int handSize     The size of the hand at the start of round
     */
     constructor(players, threshold, startBalance, handSize) {
-        this.deck = new Deck();
+        this.deck = new Deck(3, 10);
         this.threshold = threshold;
         this.handSize = handSize;
         this.round = -1;
@@ -101,7 +101,6 @@ class Game {
     
     dealHands() {
         for (const player of this.players){
-            console.log(this.deck.deal);
             player.hand = this.deck.deal(this.handSize);
         }
     }
