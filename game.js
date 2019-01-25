@@ -82,6 +82,7 @@ class Player {
     }
     
     bet(amount) {
+        this.balance -= amount;
         this.pot += amount;
     }
 }
@@ -105,6 +106,7 @@ class Game {
         this.startingPlayer = randInt(players);
         this.round = -1;
         this.turn = -players; //While turn is negative, we are still betting
+        this.total = 0;
     }
     
     dealHands() {
@@ -115,6 +117,9 @@ class Game {
     
     nextRound() {
         this.dealHands();
+        for (const player of this.players){
+            player.pot = 0;
+        }
         this.round++;
         this.turn = -this.players.length;
     }
@@ -123,15 +128,20 @@ class Game {
     @param int n    A bet if betting, an index in the hand if playing
     */
     playTurn(n) {
-        player = this.players[mod(turn, this.players.length)]
-        if (this.turn < 0){ //If betting
-            if (player.isHuman) {
-                
-            } else {
-                player.bet(1);
+        var player = this.players[mod(this.turn, this.players.length)]
+        if (this.turn < 0) { //If betting
+            player.bet(n);
+        } else { //If playing
+            this.total += player.play(n);
+            if (this.total > this.threshold){ //If the player loses
+                var pot_split = player.pot / (this.players.length - 1);
+                for (const p of this.players){
+                    if (p !== player) {
+                        p.balance += pot_split;
+                    }
+                }
+                this.nextRound();
             }
-        } else {
-            
         }
         this.turn++;
     }

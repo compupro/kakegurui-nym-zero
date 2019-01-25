@@ -17,7 +17,12 @@ console.log(testPlayer.hand);
 console.log(testPlayer.play(0));
 console.log(testPlayer.hand);
 
-testGame = new Game(4, 9, 200, 4);
-testGame.dealHands();
-console.table(testGame.players);
+testGame = new Game(4, 1, 200, 4);
 testGame.nextRound();
+testGame.playTurn(10);
+testGame.playTurn(10);
+testGame.playTurn(10);
+testGame.playTurn(10);
+testGame.playTurn(1);
+console.table(testGame.players);
+console.log(testGame.round);
