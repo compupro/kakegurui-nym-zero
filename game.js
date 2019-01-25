@@ -118,6 +118,7 @@ class Game {
     nextRound() {
         this.dealHands();
         for (const player of this.players){
+            player.balance += player.pot;
             player.pot = 0;
         }
         this.round++;
@@ -140,6 +141,7 @@ class Game {
                         p.balance += pot_split;
                     }
                 }
+                player.pot = 0;
                 this.nextRound();
             }
         }

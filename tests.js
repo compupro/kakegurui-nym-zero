@@ -19,10 +19,10 @@ console.log(testPlayer.hand);
 
 testGame = new Game(4, 1, 200, 4);
 testGame.nextRound();
-testGame.playTurn(10);
-testGame.playTurn(10);
-testGame.playTurn(10);
-testGame.playTurn(10);
+testGame.playTurn(9);
+testGame.playTurn(9);
+testGame.playTurn(9);
+testGame.playTurn(9);
 testGame.playTurn(1);
 console.table(testGame.players);
 console.log(testGame.round);

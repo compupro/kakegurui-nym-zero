@@ -1,0 +1,31 @@
+.player {
+    border: 1px solid black;
+}
+
+.game-middle {
+    border: 1px solid black;
+}
+
+.circle-container {
+    position: relative;
+    width: 6em;
+    height: 6em;
+    padding: 4.2em; /* (Half the width of the things inside the circle)*1.4 */
+    border: dashed 1px;
+    border-radius: 50%;
+    margin: 10em auto 0;
+}
+.circle-container .player, .circle-container .game-middle {
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 6em;
+    height: 6em;
+    margin: -3em; /* Half the width or height */
+}
+.circle-container img { display: block; width: 100%; }
+.human-side { transform: rotate(90deg) translate(12em) rotate(-90deg); }
+.deg90 { transform: translate(-12em); }
+.deg180 { transform: rotate(270deg) translate(12em) rotate(-270deg); }
+.deg270 { transform: translate(12em); } /* 12em = half the width of the wrapper */
