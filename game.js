@@ -16,6 +16,13 @@ function randInt(n) {
 }
 
 /*
+jQuery-like alias for the stupidly long function name
+*/
+function $(elemId){
+    return document.getElementById(elemId);
+}
+
+/*
 Use this so negative n doesn't return negative answer
 */
 function mod(n, m) {
@@ -146,5 +153,49 @@ class Game {
             }
         }
         this.turn++;
+    }
+}
+
+class Display {
+    constructor(playerNames) {
+        var gameSurface = $('game-surface');
+        gameSurface.innerHTML = ''
+        this.players = [];
+        for (var i = 0; i < 4; i++){
+            var player = document.createElement('div');
+            player.classList.add('player');
+            player.classList.add('pos' + i);
+            player.setAttribute('data-position', i);
+            
+            var playerName = playerNames[i];
+            var name = document.createElement('div');
+            name.classList.add('player-name');
+            name.appendChild(document.createTextNode(playerName));
+            player.appendChild(name);
+            
+            var bet = document.createElement('div');
+            bet.classList.add('player-bet');
+            bet.appendChild(document.createTextNode('Bet: '));
+            var betAmount = document.createElement('span');
+            betAmount.classList.add('player-bet-amount');
+            betAmount.appendChild(document.createTextNode('0'));
+            betAmount.id = 'bet-amount-' + i;
+            bet.appendChild(betAmount);
+            player.appendChild(bet);
+            
+            var cards = document.createElement('div');
+            cards.classList.add('player-cards');
+            cards.id = 'player-cards-' + i;
+            player.appendChild(cards);
+            
+            this.players.push(player);
+            gameSurface.appendChild(player);
+        }
+    }
+    
+    setBet(playerIndex, bet) {
+        var betAmountElem = $('bet-amount-' + playerIndex);
+        betAmountElem.innerHTML = '';
+        betAmountElem.appendChild(document.createTextNode(bet));
     }
 }

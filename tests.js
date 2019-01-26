@@ -26,3 +26,8 @@ testGame.playTurn(9);
 testGame.playTurn(1);
 console.table(testGame.players);
 console.log(testGame.round);
+
+testDisplay = new Display(['You0', 'Alice0', 'Bob0', 'Carol0']);
+testDisplay = new Display(['You', 'Alice', 'Bob', 'Carol']);
+testDisplay.setBet(1, 500);
+console.log(testDisplay.players)
