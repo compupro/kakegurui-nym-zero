@@ -197,10 +197,14 @@ class Display {
             gameSurface.appendChild(player);
         }
 
+        var gameMiddle = document.createElement('div');
+        gameMiddle.id = 'game-middle';
+        gameSurface.appendChild(gameMiddle)
+
         var totalTracker = document.createElement('span');
         totalTracker.id = 'total-tracker';
         totalTracker.appendChild(document.createTextNode('Total: 0/' + this.threshold));
-        gameSurface.appendChild(totalTracker);
+        gameMiddle.appendChild(totalTracker);
     }
 
     /*
@@ -231,5 +235,16 @@ class Display {
         var totalTracker = $('total-tracker');
         totalTracker.innerHTML = '';
         totalTracker.appendChild(document.createTextNode('Total:' + total + '/' + this.threshold));
+    }
+    
+    playCard(playerIndex, cardValue) {
+        var card = document.createElement('div');
+        card.appendChild(document.createTextNode(cardValue));
+        $('game-middle').appendChild(card);
+        card.classList.add('pos' + playerIndex);
+        card.classList.add('card-played');
+        setTimeout( function(){
+            $('game-middle').removeChild(card);
+            }, 1000);
     }
 }

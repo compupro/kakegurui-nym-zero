@@ -47,6 +47,19 @@
     transform: translate(calc(var(--game-surface-radius) / var(--pos-distance)), 0);
 }
 
+.card-played {
+    background-color: #aaa;
+    width: 20px;
+    height: 30px;
+    margin-right: 5px;
+    animation: card-played 1s forwards;
+}
+
+@keyframes card-played {
+    60% { transform: none; }
+    to { transform: none; visibility: hidden; }
+}
+
 #game-surface {
     border: 1px solid black;
     width: var(--game-surface-radius);
@@ -54,4 +67,9 @@
     display: flex;
     justify-content:center;
     align-items:center;
+}
+
+#game-middle {
+    width: var(--game-surface-radius);
+    height: var(--game-surface-radius);
 }
