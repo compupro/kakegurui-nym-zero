@@ -43,11 +43,11 @@ class Deck {
         }
         this.shuffle();
     }
-    
+
     shuffle() {
         this.deck = shuffle(this.deck);
     }
-    
+
     /*
     @param int n
     @return int     When n == 1
@@ -61,7 +61,7 @@ class Deck {
         }
         return cards
     }
-    
+
     getLength() {
         return this.deck.length;
     }
@@ -79,7 +79,7 @@ class Player {
         this.hand = [];
         this.pot = 0;
     }
-    
+
     /*
     @param  int i   The index of the card to be played from hand
     @return int     The value of the card played
@@ -87,7 +87,7 @@ class Player {
     play(i) {
         return this.hand.splice(i, 1)[0];
     }
-    
+
     bet(amount) {
         this.balance -= amount;
         this.pot += amount;
@@ -115,13 +115,13 @@ class Game {
         this.turn = -players; //While turn is negative, we are still betting
         this.total = 0;
     }
-    
+
     dealHands() {
         for (const player of this.players){
             player.hand = this.deck.deal(this.handSize);
         }
     }
-    
+
     nextRound() {
         this.dealHands();
         for (const player of this.players){
@@ -131,7 +131,7 @@ class Game {
         this.round++;
         this.turn = -this.players.length;
     }
-    
+
     /*
     @param int n    A bet if betting, an index in the hand if playing
     */
@@ -159,23 +159,25 @@ class Game {
 class Display {
     /*
     @param Array[String] playerNames
+    @param int           threshold      The threshold for losing a round
     */
-    constructor(playerNames) {
+    constructor(playerNames, threshold) {
         var gameSurface = $('game-surface');
         gameSurface.innerHTML = ''
         this.players = [];
+        this.threshold = threshold;
         for (var i = 0; i < 4; i++){
             var player = document.createElement('div');
             player.classList.add('player');
             player.classList.add('pos' + i);
             player.setAttribute('data-position', i);
-            
+
             var playerName = playerNames[i];
             var name = document.createElement('div');
             name.classList.add('player-name');
             name.appendChild(document.createTextNode(playerName));
             player.appendChild(name);
-            
+
             var bet = document.createElement('div');
             bet.classList.add('player-bet');
             bet.appendChild(document.createTextNode('Bet: '));
@@ -185,30 +187,35 @@ class Display {
             betAmount.id = 'bet-amount-' + i;
             bet.appendChild(betAmount);
             player.appendChild(bet);
-            
+
             var cards = document.createElement('div');
             cards.classList.add('player-cards');
             cards.id = 'player-cards-' + i;
             player.appendChild(cards);
-            
+
             this.players.push(player);
             gameSurface.appendChild(player);
         }
+
+        var totalTracker = document.createElement('span');
+        totalTracker.id = 'total-tracker';
+        totalTracker.appendChild(document.createTextNode('Total: 0/' + this.threshold));
+        gameSurface.appendChild(totalTracker);
     }
-    
+
     /*
     @param int playerIndex  Index of player in this.players
-    @param int bet         
+    @param int bet
     */
     setBet(playerIndex, bet) {
         var betAmountElem = $('bet-amount-' + playerIndex);
         betAmountElem.innerHTML = '';
         betAmountElem.appendChild(document.createTextNode(bet));
     }
-    
+
     /*
     @param int playerIndex  Index of player in this.players
-    @param int cards        The number of cards the player has      
+    @param int cards        The number of cards the player has
     */
     setCards(playerIndex, cards) {
         var cardContainer = $('player-cards-' + playerIndex);
@@ -218,5 +225,11 @@ class Display {
             card.classList.add('card-back');
             cardContainer.appendChild(card);
         }
+    }
+
+    setTotal(total) {
+        var totalTracker = $('total-tracker');
+        totalTracker.innerHTML = '';
+        totalTracker.appendChild(document.createTextNode('Total:' + total + '/' + this.threshold));
     }
 }
