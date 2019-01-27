@@ -157,6 +157,9 @@ class Game {
 }
 
 class Display {
+    /*
+    @param Array[String] playerNames
+    */
     constructor(playerNames) {
         var gameSurface = $('game-surface');
         gameSurface.innerHTML = ''
@@ -193,9 +196,27 @@ class Display {
         }
     }
     
+    /*
+    @param int playerIndex  Index of player in this.players
+    @param int bet         
+    */
     setBet(playerIndex, bet) {
         var betAmountElem = $('bet-amount-' + playerIndex);
         betAmountElem.innerHTML = '';
         betAmountElem.appendChild(document.createTextNode(bet));
+    }
+    
+    /*
+    @param int playerIndex  Index of player in this.players
+    @param int cards        The number of cards the player has      
+    */
+    setCards(playerIndex, cards) {
+        var cardContainer = $('player-cards-' + playerIndex);
+        cardContainer.innerHTML = '';
+        for (var i = 0; i < cards; i++){
+            var card = document.createElement('div');
+            card.classList.add('card-back');
+            cardContainer.appendChild(card);
+        }
     }
 }

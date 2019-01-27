@@ -30,4 +30,5 @@ console.log(testGame.round);
 testDisplay = new Display(['You0', 'Alice0', 'Bob0', 'Carol0']);
 testDisplay = new Display(['You', 'Alice', 'Bob', 'Carol']);
 testDisplay.setBet(1, 500);
+testDisplay.setCards(1, 4);
 console.log(testDisplay.players)

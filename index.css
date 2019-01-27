@@ -20,7 +20,15 @@
 }
 
 .player-cards {
-    
+    display: flex;
+    justify-content: center;
+}
+
+.card-back {
+    background-color: #F00;
+    width: 20px;
+    height: 30px;
+    margin-right: 5px;
 }
 
 .pos0 {
