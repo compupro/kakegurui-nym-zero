@@ -47,11 +47,14 @@
     transform: translate(calc(var(--game-surface-radius) / var(--pos-distance)), 0);
 }
 
-.card-played {
+.card {
     background-color: #aaa;
     width: 20px;
     height: 30px;
     margin-right: 5px;
+}
+
+.card-played {
     animation: card-played 1s forwards;
 }
 

@@ -242,9 +242,27 @@ class Display {
         card.appendChild(document.createTextNode(cardValue));
         $('game-middle').appendChild(card);
         card.classList.add('pos' + playerIndex);
+        card.classList.add('card');
         card.classList.add('card-played');
+        var self = this;
         setTimeout( function(){
             $('game-middle').removeChild(card);
+            self.setTopdeck(cardValue);
             }, 1000);
+    }
+    
+    setTopdeck(value) {
+        var topdeck = $('topdeck');
+        if (topdeck) { //if topdeck exists
+            topdeck.innerHTML = '';
+            topdeck.appendChild(document.createTextNode(value));
+        } else {
+            var gameMiddle = $('game-middle');
+            topdeck = document.createElement('div');
+            topdeck.id = 'topdeck';
+            topdeck.classList.add('card');
+            topdeck.appendChild(document.createTextNode(value));
+            gameMiddle.appendChild(topdeck);
+        }
     }
 }

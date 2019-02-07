@@ -33,4 +33,6 @@ testDisplay.setBet(1, 500);
 testDisplay.setCards(1, 4);
 testDisplay.setTotal(4);
 testDisplay.playCard(1, 3);
+testDisplay.playCard(2, 5);
+testDisplay.playCard(3, 6);
 console.log(testDisplay.players)
