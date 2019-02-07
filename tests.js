@@ -1,3 +1,6 @@
+console.log(game.players.map(x => x.name));
+
+/*
 testDeck = new Deck(3, 10);
 console.assert(testDeck.deck.filter(x => x===0).length === 10, 'There should have been 10 cards of value 0!');
 console.assert(testDeck.getLength() === 40, 'There should only be 40 cards in the deck!');
@@ -31,8 +34,8 @@ testDisplay = new Display(['You0', 'Alice0', 'Bob0', 'Carol0'], 0);
 testDisplay = new Display(['You', 'Alice', 'Bob', 'Carol'], 9);
 testDisplay.setBet(1, 500);
 testDisplay.setCards(1, 4);
-testDisplay.setTotal(4);
 testDisplay.playCard(1, 3);
 testDisplay.playCard(2, 5);
-testDisplay.playCard(3, 6);
+testDisplay.playCard(0, 6);
 console.log(testDisplay.players)
+*/

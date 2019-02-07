@@ -76,6 +76,7 @@ class Player {
     constructor(isHuman, startBalance, name) {
         this.isHuman = isHuman;
         this.balance = startBalance;
+        this.name = name;
         this.hand = [];
         this.pot = 0;
     }
@@ -107,9 +108,10 @@ class Game {
         this.handSize = handSize;
         this.players = [];
         for (var i = 0; i < players-1; i++){
-            this.players.push(new Player(false, startBalance, 'AI'));
+            this.players.push(new Player(false, startBalance, 'AI ' + i));
         }
         this.players.push(new Player(true, startBalance, 'You'));
+        this.players = shuffle(this.players);
         this.startingPlayer = randInt(players);
         this.round = -1;
         this.turn = -players; //While turn is negative, we are still betting
@@ -166,6 +168,7 @@ class Display {
         gameSurface.innerHTML = ''
         this.players = [];
         this.threshold = threshold;
+        this.total = 0;
         for (var i = 0; i < 4; i++){
             var player = document.createElement('div');
             player.classList.add('player');
@@ -187,6 +190,16 @@ class Display {
             betAmount.id = 'bet-amount-' + i;
             bet.appendChild(betAmount);
             player.appendChild(bet);
+            
+            var balance = document.createElement('div');
+            balance.classList.add('player-balance');
+            balance.appendChild(document.createTextNode('Balance: '));
+            var balanceAmount = document.createElement('span');
+            balanceAmount.classList.add('player-balance-amount');
+            balanceAmount.appendChild(document.createTextNode('0'));
+            balanceAmount.id = 'balance-amount-' + i;
+            balance.appendChild(balanceAmount);
+            player.appendChild(balance);
 
             var cards = document.createElement('div');
             cards.classList.add('player-cards');
@@ -216,6 +229,16 @@ class Display {
         betAmountElem.innerHTML = '';
         betAmountElem.appendChild(document.createTextNode(bet));
     }
+    
+    /*
+    @param int playerIndex  Index of player in this.players
+    @param int balance
+    */
+    setBalance(playerIndex, balance) {
+        var balanceAmountElem = $('balance-amount-' + playerIndex);
+        balanceAmountElem.innerHTML = '';
+        balanceAmountElem.appendChild(document.createTextNode(balance));
+    }
 
     /*
     @param int playerIndex  Index of player in this.players
@@ -234,7 +257,7 @@ class Display {
     setTotal(total) {
         var totalTracker = $('total-tracker');
         totalTracker.innerHTML = '';
-        totalTracker.appendChild(document.createTextNode('Total:' + total + '/' + this.threshold));
+        totalTracker.appendChild(document.createTextNode('Total: ' + total + '/' + this.threshold));
     }
     
     playCard(playerIndex, cardValue) {
@@ -244,10 +267,12 @@ class Display {
         card.classList.add('pos' + playerIndex);
         card.classList.add('card');
         card.classList.add('card-played');
+        this.total += cardValue;
         var self = this;
         setTimeout( function(){
             $('game-middle').removeChild(card);
             self.setTopdeck(cardValue);
+            self.setTotal(self.total);
             }, 1000);
     }
     
@@ -264,5 +289,57 @@ class Display {
             topdeck.appendChild(document.createTextNode(value));
             gameMiddle.appendChild(topdeck);
         }
+    }
+}
+
+var game = new Game(4, 9, 100, 4);
+var names = game.players.map(x => x.name);
+var humanIndex;
+for (var i = 0; i < game.players.length; i++){
+    if (game.players[i].isHuman) {
+        humanIndex = i;
+        break;
+    }
+}
+names = names.slice(humanIndex).concat(names.slice(0, humanIndex)); //moves every name before the human's name to the end
+var display = new Display(names, 9);
+
+game.dealHands();
+syncDispHands(game, display);
+syncDispBalance(game, display);
+game.playTurn(50);
+game.playTurn(50);
+game.playTurn(50);
+game.playTurn(50);
+game.playTurn(0);
+syncDispBalance(game, display);
+syncDispBets(game, display);
+syncDispHands(game, display);
+
+/*
+@param  int order
+@return int pos
+*/
+function toPos(order, humanIndex) {
+    var seq = [0, 1, 2, 3];
+    seq = seq.slice(humanIndex).concat(seq.slice(humanIndex));
+    return seq[order];
+}
+
+function syncDispHands(game, display){
+    for (var i = 0; i < game.players.length; i++) {
+        display.setCards(toPos(i), game.players[i].hand.length);
+    }
+}
+
+function syncDispBets(game, display){
+    for (var i = 0; i < game.players.length; i++) {
+        display.setBet(toPos(i), game.players[i].pot);
+    }
+}
+
+function syncDispBalance(game, display){
+    for (var i = 0; i < game.players.length; i++) {
+        display.setBalance(toPos(i), game.players[i].balance);
     }
 }
